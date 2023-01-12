@@ -1,35 +1,32 @@
-class Deck:
-    value = {
-             'Two': 2,
-             'Three': 3,
-             'Four': 4,
-             'Five': 5,
-             'Six': 6,
-             'Seven': 7,
-             'Eight': 8,
-             'Nine': 9,
-             'Ten': 10,
-             'Jack': 10,
-             'Queen': 10,
-             'King': 10,
-             'Ace': 11
-    }
-    
-    def __init__(self, value):
-        self.value = value
+import random
 
+class Deck:
+    def __init__(self):
+        self.cards = [2, 3, 4, 5, 6, 7, 8, 9, 10, 'jack', 'queen', 'king', 'ace'] * 4
+        self.value = {2:2, 3:3, 4:4, 5:5, 6:6, 7:7, 8:8, 9:9, 10:10, 'jack':10, 'queen':10, 'king':10, 'ace':11}
+        self.shuffle()
+    
+    def shuffle(self):
+        random.shuffle(self.cards)
+    
+    def draw(self):
+        return self.cards.pop()
+       
+       
 class Hand:
     def __init__(self):
         self.cards = []
-        
-    def hand_value(self, card):
-        result = 0
-        ace = 0
-        for card in self.cards:
-            result += card.value
-            if card.value == 1:
-                ace += 1
-        while result + 10 <= 21 and ace > 0:
-            result += 10
-            ace -= 1
-        return result
+        self.value = 0
+        self.aces = 0
+    
+    def add_card(self,card):
+        self.cards.append(card)
+        self.value += Deck.value[card]
+    
+        if card == 'ace':
+            self.aces += 1
+    
+    def adjust_for_ace(self):
+        while self.value > 21 and self.aces:
+            self.value -= 11
+            self.aces -= 1
