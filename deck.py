@@ -1,6 +1,6 @@
 class Deck:
     def __init__(self):
-        deck = []
+        self.deck = Deck
         
         self.suits = ["diamonds", "clubs", "hearts", "spades"]
         self.values = range(2, 15)
