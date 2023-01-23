@@ -7,7 +7,7 @@ root.title("Blackjack")
 canvas = Canvas(root, bg="green", height=800, width=1200)
 canvas.pack(fill=BOTH, expand=1)
 
-ImageTk.PhotoImage(Image.open("Images/2_of_clubs.png"))
-canvas.create_image(300, 400, image="Images/2_of_clubs.png")
+img = ImageTk.PhotoImage(Image.open("images/2_of_clubs.png"))
+canvas.create_image(0, 0, image=img, anchor="nw")
 
 root.mainloop()
