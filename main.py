@@ -35,6 +35,12 @@ card_button = Button(root, text="Get Cards", font=(
     "Helvetica", 14), command=deal_cards)
 card_button.pack(pady=20)
 
+
+# Suits and values for the cards
+suits = ["diamonds", "clubs", "hearts", "spades"]
+values = range(2, 15)
+# 11 = Jack, 12=Queen, 13=King, 14 = Ace
+
 # Card resizing
 
 
@@ -47,12 +53,6 @@ def resize_cards(self, card):
     card_image = ImageTk.PhotoImage(card_resize_image)
     # Return card
     return card_image
-
-
-# Suits and values for the cards
-suits = ["diamonds", "clubs", "hearts", "spades"]
-values = range(2, 15)
-# 11 = Jack, 12=Queen, 13=King, 14 = Ace
 
 
 class Card():
@@ -83,6 +83,16 @@ class Deck():
 class Player():
     def __init__(self, chips):
         self.chips = chips
+
+
+class Hand():
+    def __init__(self):
+        self.cards = []
+        self.value = 0
+        self.ace_count = 0
+
+    def deal_card(self):
+        self.cards.append(random.choice(Deck))
 
 
 """
