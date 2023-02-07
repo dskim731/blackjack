@@ -1,7 +1,6 @@
 from tkinter import *
 from PIL import Image, ImageTk
 import random
-from random import shuffle
 
 # Window for the game
 root = Tk()
@@ -21,27 +20,17 @@ dealer_frame.grid(row=0, column=0, padx=20, ipadx=20)
 player_frame = LabelFrame(my_frame, text="Player", bd=0)
 player_frame.grid(row=0, column=1, ipadx=20)
 
+# Labels for Dealer and Player
 dealer_label = Label(dealer_frame, text='')
 dealer_label.pack(pady=20)
 
 player_label = Label(player_frame, text='')
 player_label.pack(pady=20)
 
-# Shuffle buttons
-shuffle_button = Button(root, text="Shuffle Deck",
-                        font=("Helvetica", 14), command=shuffle)
-shuffle_button.pack(pady=20)
-card_button = Button(root, text="Get Cards", font=(
-    "Helvetica", 14), command=deal_cards)
-card_button.pack(pady=20)
-
-
 # Suits and values for the cards
 suits = ["diamonds", "clubs", "hearts", "spades"]
 values = range(2, 15)
 # 11 = Jack, 12=Queen, 13=King, 14 = Ace
-
-# Card resizing
 
 
 def resize_cards(self, card):
@@ -53,6 +42,33 @@ def resize_cards(self, card):
     card_image = ImageTk.PhotoImage(card_resize_image)
     # Return card
     return card_image
+
+
+# Shuffle the suits and values
+def shuffle():
+    random.shuffle(suits)
+    random.shuffle(values)
+
+
+# Deal Cards
+def deal_cards():
+    # Deal out two cards
+    card1 = random.choice(suits) + " " + str(random.choice(values))
+    card2 = random.choice(suits) + " " + str(random.choice(values))
+
+    # Display the cards
+    card_display = Label(root, text=card1 + " " +
+                         card2, font=("Helvetica", 14))
+    card_display.pack(pady=20)
+
+
+# Shuffle buttons
+shuffle_button = Button(root, text="Shuffle Deck",
+                        font=("Helvetica", 14), command=shuffle)
+shuffle_button.pack(pady=20)
+card_button = Button(root, text="Get Cards", font=(
+    "Helvetica", 14), command=deal_cards)
+card_button.pack(pady=20)
 
 
 class Card():
@@ -81,8 +97,8 @@ class Deck():
 
 
 class Player():
-    def __init__(self, chips):
-        self.chips = chips
+    def __init__(self):
+        pass
 
 
 class Hand():
@@ -92,7 +108,39 @@ class Hand():
         self.ace_count = 0
 
     def deal_card(self):
-        self.cards.append(random.choice(Deck))
+        self.card = random.choice(Deck)
+        self.cards += self.card
+        Deck.deck.remove(self.card)
+
+    def take_bet(player):
+        while True:
+
+            try:
+                current_bet = int(
+                    input("How many Chips would you like to bet : "))
+
+            except:
+                print("Enter a Valid Number of Chips.")
+
+            else:
+                if current_bet > player.chips:
+                    print("Unsufficient Amount. Please try again.")
+                else:
+                    player.bet += current_bet
+                    player.chips -= current_bet
+                    break
+
+    def adjust_winnings(winner):
+        if winner == "player":
+            Player.chips += int(Player.bet*1.5)
+            Player.bet = 0
+
+        elif winner == "tie":
+            Player.chips += Player.bet
+            Player.bet = 0
+
+        else:
+            Player.bet = 0
 
 
 """
