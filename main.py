@@ -1,74 +1,50 @@
 from tkinter import *
+import tkinter as tk
 from PIL import Image, ImageTk
 import random
 
-# Window for the game
-root = Tk()
-root.title('Blackjack')
-root.geometry("900x500")
-root.configure(background="green")
 
-# Frame for the cards
-my_frame = Frame(root, bg="green")
-my_frame.pack(pady=20)
+class Window(tk.Tk):
+    def __init__(self, *args, **kwargs):
+        tk.Tk.__init__(self, *args, **kwargs)
+        self.root = Tk()
+        self.root.title('Blackjack')
+        self.root.geometry("900x500")
+        self.root.configure(background="green")
 
-# Dealer frame
-dealer_frame = LabelFrame(my_frame, text="Dealer", bd=0)
-dealer_frame.grid(row=0, column=0, padx=20, ipadx=20)
+        # Frames for the cards
+        container = tk.Frame(self.root, bg="black", height=400, width=600)
+        container.pack(pady=20)
 
-# Player frame
-player_frame = LabelFrame(my_frame, text="Player", bd=0)
-player_frame.grid(row=0, column=1, ipadx=20)
 
-# Labels for Dealer and Player
-dealer_label = Label(dealer_frame, text='')
-dealer_label.pack(pady=20)
+class Dealer(tk.Frame):
+    def __init__(self):
+        tk.Frame.__init__(self)
+        # Dealer frame
+        dealer_frame = LabelFrame(container=True, text="Dealer", bd=0)
+        dealer_frame.grid(row=0, column=0, padx=20, ipadx=20)
 
-player_label = Label(player_frame, text='')
-player_label.pack(pady=20)
+        # Dealer label
+        dealer_label = tk.Label(self)
+        dealer_label.pack(pady=20)
+
+
+class Player(tk.Frame):
+    def __init__(self):
+        tk.Frame.__init__(self)
+        # Player frame
+        player_frame = LabelFrame(container=True, text="Player", bd=0)
+        player_frame.grid(row=0, column=0, padx=20, ipadx=20)
+
+        # Player label
+        player_label = tk.Label(self)
+        player_label.pack(pady=20)
+
 
 # Suits and values for the cards
 suits = ["diamonds", "clubs", "hearts", "spades"]
 values = range(2, 15)
-# 11 = Jack, 12=Queen, 13=King, 14 = Ace
-
-
-def resize_cards(self, card):
-    # Open image
-    card_img = Image.open(card)
-    # Resize image
-    card_resize_image = card_img.resize((150, 218))
-    # Display card
-    card_image = ImageTk.PhotoImage(card_resize_image)
-    # Return card
-    return card_image
-
-
-# Shuffle the suits and values
-def shuffle():
-    random.shuffle(suits)
-    random.shuffle(values)
-
-
-# Deal Cards
-def deal_cards():
-    # Deal out two cards
-    card1 = random.choice(suits) + " " + str(random.choice(values))
-    card2 = random.choice(suits) + " " + str(random.choice(values))
-
-    # Display the cards
-    card_display = Label(root, text=card1 + " " +
-                         card2, font=("Helvetica", 14))
-    card_display.pack(pady=20)
-
-
-# Shuffle buttons
-shuffle_button = Button(root, text="Shuffle Deck",
-                        font=("Helvetica", 14), command=shuffle)
-shuffle_button.pack(pady=20)
-card_button = Button(root, text="Get Cards", font=(
-    "Helvetica", 14), command=deal_cards)
-card_button.pack(pady=20)
+# 11=Jack, 12=Queen, 13=King, 14=Ace
 
 
 class Card():
@@ -76,106 +52,12 @@ class Card():
         self.suit = suit
         self.value = value
 
-    # Print card
-    def __str__(self):
-        print(f"{self.value} of {self.suit}")
-
-
-class Deck():
-    def __init__(self):
-        self.deck = []
-
-        for suit in suits:
-            for value in values:
-                self.deck.append(f'{value}_of_{suit}')
-
-    def shuffle_deck(self):
-        return shuffle(self.deck)
-
-    def deal_card(self):
-        self.deck.pop(0)
-
-
-class Player():
-    def __init__(self):
-        pass
-
-
-class Hand():
-    def __init__(self):
-        self.cards = []
-        self.value = 0
-        self.ace_count = 0
-
-    def deal_card(self):
-        self.card = random.choice(Deck)
-        self.cards += self.card
-        Deck.deck.remove(self.card)
-
-    def take_bet(player):
-        while True:
-
-            try:
-                current_bet = int(
-                    input("How many Chips would you like to bet : "))
-
-            except:
-                print("Enter a Valid Number of Chips.")
-
-            else:
-                if current_bet > player.chips:
-                    print("Unsufficient Amount. Please try again.")
-                else:
-                    player.bet += current_bet
-                    player.chips -= current_bet
-                    break
-
-    def adjust_winnings(winner):
-        if winner == "player":
-            Player.chips += int(Player.bet*1.5)
-            Player.bet = 0
-
-        elif winner == "tie":
-            Player.chips += Player.bet
-            Player.bet = 0
-
-        else:
-            Player.bet = 0
-
-
-"""
-def deal_cards(self):
-    try:
-        # Get the Dealer Card
-        card = random.choice(deck)
-        # Remove Card From Deck
-        deck.remove(card)
-        # Append Card To Dealer List
-        dealer.append(card)
-        # Output Card To Screen
-        global dealer_image
-        dealer_image = resize_cards(f'images/{card}.png')
-        dealer_label.config(image=dealer_image)
-        # dealer_label.config(text=card)
-
-        # Get the player Card
-        card = random.choice(deck)
-        # Remove Card From Deck
-        deck.remove(card)
-        # Append Card To Dealer List
-        player.append(card)
-        # Output Card To Screen
-        global player_image
-        player_image = resize_cards(f'images/{card}.png')
-        player_label.config(image=player_image)
-        # player_label.config(text=card)
-
-        # Put number of remaining cards in title bar
-        root.title(f'{len(deck)} Cards Left')
-
-    except:
-        root.title(f'No Cards In Deck')
-"""
-
-
-root.mainloop()
+    def resize_cards(card):
+        # Open image
+        card_img = Image.open(card)
+        # Resize image
+        card_resize_image = card_img.resize((150, 218))
+        # Display card
+        card_image = ImageTk.PhotoImage(card_resize_image)
+        # Return card
+        return card_image
